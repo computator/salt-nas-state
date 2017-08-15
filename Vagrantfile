@@ -13,5 +13,6 @@ Vagrant.configure(2) do |config|
   SHELL
 
   config.vm.provision "salt"
-  config.vm.provision "highstate", type: "shell", keep_color: true, inline: "salt-call --local --force-color state.apply nas"
+  config.vm.provision "salt-local", type: "shell", inline: "sed -ri '/^#?file_client:/ c file_client: local' /etc/salt/minion"
+  config.vm.provision "highstate", type: "shell", keep_color: true, inline: "salt-call --force-color state.apply nas --state-output changes"
 end
