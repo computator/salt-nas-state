@@ -10,6 +10,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision "states", type: "shell", inline: <<-SHELL
     #curl -sL https://github.com/rlifshay/salt-nginx-state/archive/master.tgz | tar -xvf - -C /srv/salt/nginx
     curl -sL https://github.com/rlifshay/salt-master/raw/master/nginx.sls -o /srv/salt/nginx.sls
+    curl -sL https://github.com/rlifshay/salt-master/raw/master/minidlna.sls -o /srv/salt/minidlna.sls
   SHELL
 
   config.vm.provision "salt"
