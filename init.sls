@@ -2,7 +2,7 @@
 
 include:
   - nginx
-  - minidlna
+  - serviio
 
 {% for path, config in salt['pillar.get']('nas:paths', []).iteritems() %}
 {% if 'dlna' in config %}
