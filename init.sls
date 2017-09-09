@@ -4,13 +4,13 @@ include:
   - nginx
   - serviio
 
-{% for path, config in salt['pillar.get']('nas:paths', []).iteritems() %}
-{% if 'dlna' in config %}
-naspath-{{ path }}-dlna:
-  file.accumulated:
-    - filename: /etc/minidlna.conf
-    - text: media_dir={{ root_path }}/{{ path }}
-    - require_in:
-      - file: minidlna-config
-{% endif %}
-{% endfor %}
+serviio-library:
+  serviio.library:
+    - library:
+      {% for path, config in salt['pillar.get']('nas:paths', []).iteritems() %}
+      {% if 'dlna' in config %}
+      - {{ root_path }}/{{ path }}
+      {% endif %}
+      {% endfor %}
+    - require:
+      - service: serviio

@@ -8,9 +8,10 @@ Vagrant.configure(2) do |config|
   config.vm.synced_folder ".test_pillar", "/srv/pillar"
 
   config.vm.provision "states", type: "shell", inline: <<-SHELL
-    #curl -sL https://github.com/rlifshay/salt-nginx-state/archive/master.tgz | tar -xvf - -C /srv/salt/nginx
     curl -sL https://github.com/rlifshay/salt-master/raw/master/nginx.sls -o /srv/salt/nginx.sls
-    curl -sL https://github.com/rlifshay/salt-master/raw/master/minidlna.sls -o /srv/salt/minidlna.sls
+    mkdir -p /srv/salt/serviio && curl -sL https://github.com/rlifshay/salt-serviio-state/archive/master.tar.gz | tar -zxvf - --strip-components 1 -C /srv/salt/serviio \
+      && mkdir -p /srv/salt/_modules && ln -sf ../serviio/_modules/serviio.py /srv/salt/_modules/serviio.py \
+      && mkdir -p /srv/salt/_states && ln -sf ../serviio/_states/serviio.py /srv/salt/_states/serviio.py
   SHELL
 
   config.vm.provision "salt"
