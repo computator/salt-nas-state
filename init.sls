@@ -4,7 +4,7 @@ include:
   - nginx
   - serviio
 
-serviio-library:
+nas-dlna-conf:
   serviio.library:
     - library:
       {% for path, config in salt['pillar.get']('nas:paths', []).iteritems() %}
