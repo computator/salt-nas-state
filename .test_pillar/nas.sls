@@ -12,3 +12,7 @@ nas:
     public:
       http: []
       dlna: []
+    nested/loc1:
+      http: []
+    nested/loc2:
+      http: []
