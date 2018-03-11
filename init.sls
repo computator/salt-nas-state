@@ -3,6 +3,7 @@
 include:
   - nginx
   - serviio
+  - samba
 
 nas-dlna-conf:
   serviio.library:
@@ -14,6 +15,27 @@ nas-dlna-conf:
       {% endfor %}
     - require:
       - service: serviio
+
+nas-samba-conf:
+  file.blockreplace:
+    - name: /etc/samba/smb.conf
+    - content: |
+        {%- for path, config in salt['pillar.get']('nas:paths', []).iteritems() %}
+        {%- if 'smb' in config %}
+        [{{ path.replace('/', '-') }}]
+        path = {{ root_path }}/{{ path }}
+        guest ok = {% if config['smb']['public']|default(true) %}yes{% else %}no{% endif %}
+        read only = yes
+        {%- if 'allow_write' in config['smb'] %}
+        write list = {{ config['smb']['allow_write'] }}
+        {%- endif %}
+        {% endif %}
+        {%- endfor %}
+    - append_if_not_found: true
+    - require:
+      - pkg: samba
+    - watch_in:
+      - service: samba
 
 nas-nginx-conf:
   file.managed:
