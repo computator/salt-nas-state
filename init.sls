@@ -19,6 +19,8 @@ nas-dlna-conf:
 nas-samba-conf:
   file.blockreplace:
     - name: /etc/samba/smb.conf
+    - marker_start: '#-- start salt managed shares --'
+    - marker_end: '#-- end salt managed shares --'
     - content: |
         {%- for path, config in salt['pillar.get']('nas:paths', []).iteritems() %}
         {%- if 'smb' in config %}
